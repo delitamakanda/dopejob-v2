@@ -2,7 +2,7 @@ import xlrd
 from django.utils.six.moves import range
 from django.core.management.base import BaseCommand
 
-from authentication.models import Cursus
+from jobboard_api.models import Cursus
 
 SILENT, NORMAL, VERBOSE, VERY_VERBOSE = 0, 1, 2, 3
 

@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from django.utils.encoding import force_text
 from django.conf import settings
 from django.core.files import File
-from authentication.models import Job
+from jobboard_api.models import Job
 
 SILENT, NORMAL, VERBOSE, VERY_VERBOSE = 0, 1, 2, 3
 
