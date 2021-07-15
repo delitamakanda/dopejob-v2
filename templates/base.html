@@ -2,18 +2,30 @@
 {% load staticfiles %}
 {% load i18n %}
 <!DOCTYPE html lang="en">
-  <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="">
-    <meta name="author" content="Délita Makanda">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>dopejob - {% block title %}{% endblock %}{% block head_title %}{% endblock %}</title>
-    {#% render_bundle 'main' 'css' %#}
-  </head>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="#2296f3" />
+  <meta name="author" content="Délita Makanda">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="title" content="dopejob - jobboard" />
+  <meta name="description"
+    content="start a new carrer" />
+  <meta name="keywords"
+    content="jobboard" />
+  <title>dopejob - {% block title %}{% endblock %}{% block head_title %}{% endblock %}</title>
+  {% render_bundle 'main' 'css' %}
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+</head>
 
 <body id="{% block bodyId %}genericPage{% endblock %}">
+  <noscript>You need to enable JavaScript to run this app.</noscript>
   {% block content %}{% endblock %}
   {% render_bundle 'main' 'js' %}
   {#% render_bundle 'runtime-main' 'js' %#}
