@@ -233,7 +233,7 @@ const NotificationSection = () => {
                                     </CardContent>
                                     <Divider />
                                     <CardActions className={classes.cardAction}>
-                                        <Button size="small" disableElevation>
+                                        <Button component={Link} to="/user/notifications" size="small" disableElevation>
                                             View All
                                         </Button>
                                     </CardActions>

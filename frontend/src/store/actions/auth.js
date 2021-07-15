@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { push } from 'react-router-redux';
-// eslint-disable-next-line
-import { checkHttpStatus, parseJSON } from '../../utils';
+import { checkHttpStatus } from '../../utils';
 import {
     AUTH_LOGIN_USER_REQUEST,
     AUTH_LOGIN_USER_FAILURE,
@@ -66,7 +64,6 @@ export function authLogout() {
 export function authLogoutAndRedirect() {
     return (dispatch, state) => {
         dispatch(authLogout());
-        dispatch(push('/login'));
         return Promise.resolve(); // TODO: we need a promise here because of the tests, find a better way
     };
 }
@@ -80,7 +77,6 @@ export function authLoginUser(username, password) {
                 password: password
             })
             .then(checkHttpStatus)
-            // .then(parseJSON)
             .then(response => {
                 dispatch(authLoginUserSuccess(response.data.key));
                 dispatch(checkAuthTimeout(3600));
@@ -108,7 +104,7 @@ export const authEmployeeSignup = (username, email, password1, password2, last_n
     return dispatch => {
         dispatch(authLoginUserRequest())
         axios
-            .post('/api-authentication/employee-registration', {
+            .post('/jobboard-api/employee-registration', {
                 username: username,
                 email: email,
                 password1: password1,
@@ -136,7 +132,7 @@ export const authStudentSignup = (username, email, password1, password2, last_na
     return dispatch => {
         dispatch(authLoginUserRequest())
         axios
-            .post('/api-authentication/student-registration', {
+            .post('/jobboard-api/student-registration', {
                 username: username,
                 email: email,
                 password1: password1,
@@ -164,7 +160,7 @@ export const authEnterpriseSignup = (username, email, password1, password2, last
     return dispatch => {
         dispatch(authLoginUserRequest())
         axios
-            .post('/api-authentication/enterprise-registration', {
+            .post('/jobboard-api/enterprise-registration', {
                 username: username,
                 email: email,
                 password1: password1,

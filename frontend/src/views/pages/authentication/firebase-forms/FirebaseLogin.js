@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // material-ui
@@ -32,6 +32,8 @@ import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 // assets
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+import { authLoginUser, resetAuthLoginUserFailure } from '../../../../store/actions/auth';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -74,16 +76,32 @@ const useStyles = makeStyles((theme) => ({
 
 //============================|| FIREBASE - LOGIN ||============================//
 
+function mapStateToProps(state) {
+    return {
+        loading: state.auth.loading,
+        isAuthenticated: state.auth.isAuthenticated,
+        isAuthenticating: state.auth.isAuthenticating,
+        statusText: state.auth.statusText
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        authLogin: (username, password) => dispatch(authLoginUser(username, password)),
+        reset: () => dispatch(resetAuthLoginUserFailure())
+    };
+}
+
 const FirebaseLogin = (props, { ...others }) => {
     const classes = useStyles();
 
-    const customization = useSelector((state) => state.customization);
     const scriptedRef = useScriptRef();
     const [checked, setChecked] = React.useState(true);
+    const dispatch = useDispatch();
 
-    const googleHandler = async () => {
-        console.error('Login');
-    };
+    const handleSignin = (username, password) => {
+        dispatch(authLoginUser(username, password));
+    }
 
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => {
@@ -98,37 +116,12 @@ const FirebaseLogin = (props, { ...others }) => {
         <React.Fragment>
             <Grid container direction="column" justifyContent="center" spacing={2}>
                 <Grid item xs={12}>
-                    <AnimateButton>
-                        <Button
-                            disableElevation
-                            fullWidth={true}
-                            className={classes.redButton}
-                            onClick={googleHandler}
-                            size="large"
-                            variant="contained"
-                        >
-                        </Button>
-                    </AnimateButton>
-                </Grid>
-                <Grid item xs={12}>
                     <Box
                         sx={{
                             alignItems: 'center',
                             display: 'flex'
                         }}
                     >
-                        <Divider className={classes.signDivider} orientation="horizontal" />
-                        <AnimateButton>
-                            <Button
-                                variant="outlined"
-                                className={classes.signText}
-                                sx={{ borderRadius: customization.borderRadius + 'px' }}
-                                disableRipple
-                                disabled
-                            >
-                                OR
-                            </Button>
-                        </AnimateButton>
                         <Divider className={classes.signDivider} orientation="horizontal" />
                     </Box>
                 </Grid>
@@ -145,12 +138,12 @@ const FirebaseLogin = (props, { ...others }) => {
 
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    username: '',
+                    password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
-                    email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+                    username: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                     password: Yup.string().max(255).required('Password is required')
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -159,6 +152,7 @@ const FirebaseLogin = (props, { ...others }) => {
                             setStatus({ success: true });
                             setSubmitting(false);
                         }
+                        handleSignin(values.username, values.password);
                     } catch (err) {
                         console.error(err);
                         if (scriptedRef.current) {
@@ -171,13 +165,13 @@ const FirebaseLogin = (props, { ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        <FormControl fullWidth error={Boolean(touched.email && errors.email)} className={classes.loginInput}>
+                        <FormControl fullWidth error={Boolean(touched.username && errors.username)} className={classes.loginInput}>
                             <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-email-login"
                                 type="email"
-                                value={values.email}
-                                name="email"
+                                value={values.username}
+                                name="username"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
                                 label="Email Address / Username"
@@ -187,10 +181,10 @@ const FirebaseLogin = (props, { ...others }) => {
                                     }
                                 }}
                             />
-                            {touched.email && errors.email && (
+                            {touched.username && errors.username && (
                                 <FormHelperText error id="standard-weight-helper-text-email-login">
                                     {' '}
-                                    {errors.email}{' '}
+                                    {errors.username}{' '}
                                 </FormHelperText>
                             )}
                         </FormControl>
@@ -288,4 +282,4 @@ const FirebaseLogin = (props, { ...others }) => {
     );
 };
 
-export default FirebaseLogin;
+export default connect(mapStateToProps, mapDispatchToProps)(FirebaseLogin);

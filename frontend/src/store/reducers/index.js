@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 
 // reducer import
 import customizationReducer from './customizationReducer';
@@ -12,5 +13,6 @@ export default combineReducers({
     customization: customizationReducer,
     auth: authReducer,
     responsive: responsiveReducer,
-    search: searchReducer
+    search: searchReducer,
+    routing: routerReducer
 });

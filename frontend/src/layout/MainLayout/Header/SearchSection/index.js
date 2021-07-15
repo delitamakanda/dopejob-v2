@@ -11,7 +11,7 @@ import PopupState, { bindPopper, bindToggle } from 'material-ui-popup-state';
 import Transitions from '../../../../ui-component/extended/Transitions';
 
 // assets
-import { IconAdjustmentsHorizontal, IconSearch, IconX } from '@tabler/icons';
+import { IconSearch, IconX } from '@tabler/icons';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -127,7 +127,7 @@ const SearchSection = () => {
                                                                 <InputAdornment position="end">
                                                                     <ButtonBase sx={{ borderRadius: '12px' }}>
                                                                         <Avatar variant="rounded" className={classes.headerAvatar}>
-                                                                            <IconAdjustmentsHorizontal stroke={1.5} size="1.3rem" />
+                                                                            <IconSearch stroke={1.5} size="1.3rem" />
                                                                         </Avatar>
                                                                     </ButtonBase>
                                                                     <Box
@@ -179,7 +179,7 @@ const SearchSection = () => {
                         <InputAdornment position="end">
                             <ButtonBase sx={{ borderRadius: '12px' }}>
                                 <Avatar variant="rounded" className={classes.headerAvatar}>
-                                    <IconAdjustmentsHorizontal stroke={1.5} size="1.3rem" />
+                                    <IconSearch stroke={1.5} size="1.3rem" />
                                 </Avatar>
                             </ButtonBase>
                         </InputAdornment>

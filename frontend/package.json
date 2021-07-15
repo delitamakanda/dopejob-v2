@@ -39,6 +39,7 @@
     "react-redux": "^7.2.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "react-router-redux": "^4.0.8",
     "react-scripts": "^3.4.3",
     "redux": "^4.1.0",
     "yup": "^0.32.9"
@@ -71,6 +72,12 @@
     "@material-ui/codemod": "^4.5.0",
     "date-fns": "^2.22.1",
     "react-app-rewired": "^2.1.8",
+    "redux-devtools": "^3.7.0",
+    "redux-devtools-dock-monitor": "^1.2.0",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-devtools-log-monitor": "^2.1.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "sass": "^1.35.2",
     "webpack-bundle-tracker": "^1.2.0"
   }

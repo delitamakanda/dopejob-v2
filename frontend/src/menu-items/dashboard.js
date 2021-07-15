@@ -1,9 +1,12 @@
 // assets
-import { IconDashboard, IconDeviceAnalytics, IconMessage } from '@tabler/icons';
+import { IconDashboard, IconDeviceAnalytics, IconMessage, IconReportMoney, IconWallet } from '@tabler/icons';
 
 // constant
 const icons = {
     IconDashboard: IconDashboard,
+    IconMessage: IconMessage,
+    IconReportMoney: IconReportMoney,
+    IconWallet: IconWallet,
     IconDeviceAnalytics
 };
 
@@ -27,7 +30,7 @@ export const dashboard = {
             title: 'Jobs',
             type: 'item',
             url: '/dashboard/jobs',
-            icon: icons['IconDashboard'],
+            icon: icons['IconReportMoney'],
             breadcrumbs: false
         },
         {
@@ -35,7 +38,15 @@ export const dashboard = {
             title: 'My messages',
             type: 'item',
             url: '/user/messages',
-            icon: icons['IconDashboard'],
+            icon: icons['IconMessage'],
+            breadcrumbs: false
+        },
+        {
+            id: 'offers',
+            title: 'My offers',
+            type: 'item',
+            url: '/user/offers',
+            icon: icons['IconWallet'],
             breadcrumbs: false
         }
     ]

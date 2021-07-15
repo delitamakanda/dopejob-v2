@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Loadable from '../ui-component/Loadable';
 
 // project imports
@@ -14,9 +15,16 @@ const AuthSignup = Loadable(lazy(() => import('../views/pages/authentication/aut
 const JobOffers = Loadable(lazy(() => import('../views/job-offers')));
 
 //-----------------------|| AUTHENTICATION ROUTING ||-----------------------//
+function mapStateToProps(state) {
+    return { isAuthenticated: !!state.auth.token };
+}
 
-const AuthenticationRoutes = () => {
+const AuthenticationRoutes = (props) => {
     const location = useLocation();
+
+    if (props.isAuthenticated) {
+        return <Redirect to="/dashboard/default" />
+    }
 
     return (
         <Route path={['/login', '/signup', '/register/c', '/register/s', '/register/e', '/jobs']}>
@@ -34,4 +42,4 @@ const AuthenticationRoutes = () => {
     );
 };
 
-export default AuthenticationRoutes;
+export default connect(mapStateToProps)(AuthenticationRoutes);

@@ -1,5 +1,6 @@
 import React, { lazy } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch, useLocation, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 // project imports
 import MainLayout from './../layout/MainLayout';
@@ -27,9 +28,17 @@ const SocialProfile = Loadable(lazy(() => import('../views/social-profile')));
 
 
 //-----------------------|| MAIN ROUTING ||-----------------------//
+function mapStateToProps(state) {
+    return { isAuthenticated: !!state.auth.token };
+}
 
-const MainRoutes = () => {
+const MainRoutes = (props) => {
     const location = useLocation();
+
+    if (!props.isAuthenticated) {
+        return <Redirect to="/login" />
+    }
+
 
     return (
         <Route
@@ -76,4 +85,4 @@ const MainRoutes = () => {
     );
 };
 
-export default MainRoutes;
+export default connect(mapStateToProps)(MainRoutes);

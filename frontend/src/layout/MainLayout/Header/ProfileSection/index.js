@@ -272,7 +272,7 @@ const ProfileSection = () => {
                                                     selected={selectedIndex === 0}
                                                     onClick={(event) => handleListItemClick(event, 0)}
                                                     component={React.forwardRef((props, ref) => (
-                                                        <RouterLink {...props} to="/user/account-profile/profile1" />
+                                                        <RouterLink {...props} to="/user/account-settings" />
                                                     ))}
                                                 >
                                                     <ListItemIcon>
@@ -286,7 +286,7 @@ const ProfileSection = () => {
                                                     selected={selectedIndex === 1}
                                                     onClick={(event) => handleListItemClick(event, 1)}
                                                     component={React.forwardRef((props, ref) => (
-                                                        <RouterLink {...props} to="/user/social-profile/posts" />
+                                                        <RouterLink {...props} to="/user/social-profile" />
                                                     ))}
                                                 >
                                                     <ListItemIcon>
