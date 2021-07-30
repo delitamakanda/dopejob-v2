@@ -255,6 +255,15 @@ const FirebaseLogin = (props, { ...others }) => {
                                 <FormHelperText error>{errors.submit}</FormHelperText>
                             </Box>
                         )}
+                        {props.statusText && (
+                            <Box
+                                sx={{
+                                    mt: 3
+                                }}
+                            >
+                                <FormHelperText error>{props.statusText}</FormHelperText>
+                            </Box>
+                        )}
 
                         <Box
                             sx={{
@@ -264,7 +273,7 @@ const FirebaseLogin = (props, { ...others }) => {
                             <AnimateButton>
                                 <Button
                                     disableElevation
-                                    disabled={isSubmitting}
+                                    disabled={isSubmitting || props.loading || props.isAuthenticated}
                                     fullWidth
                                     size="large"
                                     type="submit"
