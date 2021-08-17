@@ -3,7 +3,7 @@ olefile==0.44
 Pillow==8.2.0
 pytz==2017.3
 gunicorn>=19.6.0
-psycopg2-binary
+psycopg2-binary==2.8.6
 whitenoise==4.1.4
 dj-database-url>=0.4.1
 dj-pagination==2.4.0
