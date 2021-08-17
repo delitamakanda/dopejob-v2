@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { connect, useDispatch } from 'react-redux';
-import { authEnterpriseSignup, authStudentSignup, authEmployeeSignup } from '../../../../store/actions/auth';
-import { jobListURL, facultyListURL, cursusListURL } from '../../../../api/constants';
+import { connect } from 'react-redux';
+import { authSignup } from '../../../../store/actions/auth';
 
 // material-ui
 import { makeStyles } from '@material-ui/styles';
@@ -20,7 +19,7 @@ import {
     OutlinedInput,
     TextField,
     Typography,
-    useMediaQuery,
+    useMediaQuery
 } from '@material-ui/core';
 
 // third party
@@ -29,7 +28,7 @@ import { Formik } from 'formik';
 
 // project imports
 import useScriptRef from '../../../../hooks/useScriptRef';
-import AnimateButton from './../../../../ui-component/extended/AnimateButton';
+import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from '../../../../utils/password-strength';
 
 // assets
@@ -87,16 +86,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        signupEmployee: (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, office, faculty, job) => dispatch(authEmployeeSignup(username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, office, faculty, job)),
-        signupStudent: (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, year, cursus, faculty) => dispatch(authStudentSignup(username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, year, cursus, faculty)),
-        signupEnterprise: (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, logo, office, company_url, address, description) => dispatch(authEnterpriseSignup(username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, logo, office, company_url, address, description))
+        signup: (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, user_type) => dispatch(authSignup(username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, user_type)),
     };
 }
 
 const FirebaseRegister = (props, { ...others }) => {
     const classes = useStyles();
-    const scriptedRef = useScriptRef();
     const location = useLocation();
+    const scriptedRef = useScriptRef();
     const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
@@ -105,33 +102,8 @@ const FirebaseRegister = (props, { ...others }) => {
     const [strength, setStrength] = useState(0);
     const [level, setLevel] = useState('');
 
-    const [open, setOpen] = useState(false);
-    const [open2, setOpen2] = useState(false);
-    const [open3, setOpen3] = useState(false);
-    const [options, setOptions] = useState([]);
-    const [options2, setOptions2] = useState([]);
-    const [options3, setOptions3] = useState([]);
-    const loading = open && options.length === 0;
-    const loading2 = open2 && options2.length === 0;
-    const loading3 = open3 && options3.length === 0;
-
-    const dispatch = useDispatch();
-
     const handleSignup = (values) => {
-        switch (usage) {
-            case 'student':
-                dispatch(authStudentSignup(values.username, values.email, values.password1, values.password2, values.last_name, values.first_name, values.birth_date, values.home_phone_number, values.mobile_phone_number, values.year, values.cursus, values.faculty))
-                break;
-            case 'employee':
-                dispatch(authEmployeeSignup(values.username, values.email, values.password1, values.password2, values.last_name, values.first_name, values.birth_date, values.home_phone_number, values.mobile_phone_number, values.office, values.faculty, values.job))
-                break;
-            case 'enterprise':
-                dispatch(authEnterpriseSignup(values.username, values.email, values.password1, values.password2, values.last_name, values.first_name, values.birth_date, values.home_phone_number, values.mobile_phone_number, values.logo, values.office, values.company_url, values.address, values.description))
-                break;
-
-            default:
-                break;
-        }
+        props.signup(values.username, values.email, values.password, values.password, values.last_name, values.first_name, values.birth_date, values.home_phone_number, values.mobile_phone_number, values.user_type);
     }
 
     const displayFormsByUsage = () => {
@@ -169,90 +141,6 @@ const FirebaseRegister = (props, { ...others }) => {
         displayFormsByUsage();
     });
 
-    useEffect(() => {
-        let active = true;
-
-        if (!loading) {
-            return undefined;
-        }
-
-        (async () => {
-            const response = await fetch(facultyListURL);
-            const faculties = await response.json();
-
-            if (active) {
-                setOptions(Object.keys(faculties).map((key) => faculties[key]));
-            }
-
-        })();
-
-        return () => {
-            active = false;
-        };
-    }, [loading]);
-
-    useEffect(() => {
-        let active2 = true;
-
-        if (!loading2) {
-            return undefined;
-        }
-
-        (async () => {
-            const response = await fetch(jobListURL);
-            const jobs = await response.json();
-
-            if (active2) {
-                setOptions2(Object.keys(jobs).map((key) => jobs[key]));
-            }
-
-        })();
-
-        return () => {
-            active2 = false;
-        };
-    }, [loading2]);
-
-    useEffect(() => {
-        let active3 = true;
-
-        if (!loading3) {
-            return undefined;
-        }
-
-        (async () => {
-            const response = await fetch(cursusListURL);
-            const cursus = await response.json();
-
-            if (active3) {
-                setOptions3(Object.keys(cursus).map((key) => cursus[key]));
-            }
-
-        })();
-
-        return () => {
-            active3 = false;
-        };
-    }, [loading3]);
-
-    useEffect(() => {
-        if (!open) {
-            setOptions([]);
-        }
-    }, [open]);
-
-    useEffect(() => {
-        if (!open2) {
-            setOptions2([]);
-        }
-    }, [open2]);
-
-    useEffect(() => {
-        if (!open3) {
-            setOptions3([]);
-        }
-    }, [open3]);
-
     return (
         <React.Fragment>
             <Grid container direction="column" justifyContent="center" spacing={2}>
@@ -262,7 +150,7 @@ const FirebaseRegister = (props, { ...others }) => {
                             mb: 2
                         }}
                     >
-                        <Typography variant="subtitle1">Sign up with Email address</Typography>
+                        <Typography variant="subtitle1">Sign up with Email address as {usage}</Typography>
                     </Box>
                 </Grid>
             </Grid>
@@ -271,26 +159,14 @@ const FirebaseRegister = (props, { ...others }) => {
                 initialValues={{
                     username: '',
                     email: '',
-                    password1: '',
+                    password: '',
                     password2: '',
                     last_name: '',
                     first_name: '',
                     birth_date: '',
                     home_phone_number: '',
                     mobile_phone_number: '',
-                    /*year: '',
-                    cursus: '',
-                    faculty: '',
-                    
-                    // employee
-                    job: '',
-
-                    // enterprise
-                    logo: '', 
-                    office: '',
-                    company_url: '', 
-                    address: '', 
-                    description: '',*/
+                    user_type: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
@@ -300,9 +176,10 @@ const FirebaseRegister = (props, { ...others }) => {
                     home_phone_number: Yup.string().max(255),
                     mobile_phone_number: Yup.string().max(255),
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password1: Yup.string().max(255).required('Password is required'),
-                    password2: Yup.string().oneOf([Yup.ref('password1'), null], 'Passwords must match'),
-                    birth_date: Yup.string().required('Birth date is required')
+                    password: Yup.string().max(255).required('Password is required'),
+                    password2: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+                    birth_date: Yup.string().required('Birth date is required'),
+                    user_type: Yup.string().max(200)
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
@@ -310,6 +187,7 @@ const FirebaseRegister = (props, { ...others }) => {
                             setStatus({ success: true });
                             setSubmitting(false);
                         }
+                        values.user_type = usage;
                         handleSignup(values)
                         console.log(values)
                     } catch (err) {
@@ -333,7 +211,6 @@ const FirebaseRegister = (props, { ...others }) => {
                                     value={values.first_name}
                                     name="first_name"
                                     type="text"
-                                    defaultValue=""
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     inputProps={{
@@ -352,7 +229,6 @@ const FirebaseRegister = (props, { ...others }) => {
                                     margin="normal"
                                     name="last_name"
                                     type="text"
-                                    defaultValue=""
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     inputProps={{
@@ -409,13 +285,13 @@ const FirebaseRegister = (props, { ...others }) => {
                             )}
                         </FormControl>
 
-                        <FormControl fullWidth error={Boolean(touched.password1 && errors.password1)} className={classes.loginInput}>
-                            <InputLabel htmlFor="outlined-adornment-password1-register">Password</InputLabel>
+                        <FormControl fullWidth error={Boolean(touched.password && errors.password)} className={classes.loginInput}>
+                            <InputLabel htmlFor="outlined-adornment-password-register">Password</InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-password1-register"
+                                id="outlined-adornment-password-register"
                                 type={showPassword ? 'text' : 'password'}
-                                value={values.password1}
-                                name="password1"
+                                value={values.password}
+                                name="password"
                                 label="Password"
                                 onBlur={handleBlur}
                                 onChange={(e) => {
@@ -440,10 +316,10 @@ const FirebaseRegister = (props, { ...others }) => {
                                     }
                                 }}
                             />
-                            {touched.password1 && errors.password1 && (
+                            {touched.password && errors.password && (
                                 <FormHelperText error id="standard-weight-helper-text-password-register">
                                     {' '}
-                                    {errors.password1}{' '}
+                                    {errors.password}{' '}
                                 </FormHelperText>
                             )}
                         </FormControl>
@@ -532,7 +408,6 @@ const FirebaseRegister = (props, { ...others }) => {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={6}>
-
                             </Grid>
                         </Grid>
 
@@ -593,23 +468,6 @@ const FirebaseRegister = (props, { ...others }) => {
                             </Grid>
                         </Grid>
 
-                        {usage === 'enterprise' && (
-                            <FormControl>
-                                enterprise
-                            </FormControl>
-                        )}
-
-                        {usage === 'employee' && (
-                            <FormControl>
-                                employee
-                            </FormControl>
-                        )}
-
-                        {usage === 'student' && (
-                            <FormControl>
-                                student
-                            </FormControl>
-                        )}
 
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>

@@ -5,14 +5,42 @@ import {
     AUTH_LOGIN_USER_FAILURE,
     AUTH_LOGIN_USER_SUCCESS,
     AUTH_LOGOUT_USER,
-    RESET_AUTH_LOGIN_USER_FAILURE
+    RESET_AUTH_LOGIN_USER_FAILURE,
+    GET_USER_REQUEST,
+    GET_USER_SUCCESS,
+    GET_USER_FAILURE
 } from '../constants';
+import { getUserURL } from '../../api/constants'
+
+
+export function getUserRequest() {
+    return {
+        type: GET_USER_REQUEST
+    };
+}
+
+export function getUserSuccess(user) {
+    console.log(user)
+    return {
+        type: GET_USER_SUCCESS,
+        payload: {
+            user,
+        }
+    };
+}
+
+export function getUserFailure() {
+    return {
+        type: GET_USER_FAILURE
+    };
+}
 
 export function authLoginUserSuccess(token) {
     console.log(token)
     localStorage.setItem('token', token);
     const expirationDate = new Date(new Date().getTime() + 3600 * 1000);
     localStorage.setItem('expirationDate', expirationDate);
+    axios.defaults.headers.common.Authorization = 'Token ' + token;
     return {
         type: AUTH_LOGIN_USER_SUCCESS,
         payload: {
@@ -53,12 +81,27 @@ export function authLoginUserRequest() {
     };
 }
 
-export function authLogout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expirationDate')
+export function authLogoutUserRequest() {
     return {
         type: AUTH_LOGOUT_USER
     };
+}
+
+export function authLogout() {
+    return (dispatch) => {
+        dispatch(authLogoutUserRequest());
+        axios
+            .post('/rest-auth/logout/', {})
+            .then(checkHttpStatus)
+            .then(() => {
+                delete axios.defaults.headers.common.Authorization;
+                localStorage.removeItem('token');
+                localStorage.removeItem('expirationDate');
+            })
+            .catch((error) => {
+                console.log(`Connection Error', 'An error occurred while sending your data! ${error}`);
+            });
+    }
 }
 
 export function authLogoutAndRedirect() {
@@ -100,41 +143,31 @@ export function authLoginUser(username, password) {
     };
 }
 
-export const authEmployeeSignup = (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, office, faculty, job) => {
-    return dispatch => {
-        dispatch(authLoginUserRequest())
+export function getCurrentUser() {
+    return (dispatch) => {
+        dispatch(getUserRequest());
         axios
-            .post('/jobboard-api/employee-registration', {
-                username: username,
-                email: email,
-                password1: password1,
-                password2: password2,
-                last_name: last_name,
-                first_name: first_name,
-                birth_date: birth_date,
-                home_phone_number: home_phone_number,
-                mobile_phone_number: mobile_phone_number,
-                office: office,
-                job: job,
-                faculty: faculty
+            .get(getUserURL)
+            .then(checkHttpStatus)
+            .then(response => {
+                dispatch(getUserSuccess(response.data));
             })
-            .then(res => {
-                dispatch(authLoginUserSuccess(res.data.key));
-                dispatch(checkAuthTimeout(3600))
-            })
-            .catch(err => {
-                dispatch(authLoginUserFailure(401, err))
-            })
-    }
+            .catch((error) => {
+                dispatch(getUserFailure(`Connection Error', 'An error occurred while sending your data! ${error}`));
+
+                return Promise.resolve(); // TODO: we need a promise here because of the tests, find a better way
+            });
+    };
 }
 
-export const authStudentSignup = (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, year, cursus, faculty) => {
+export const authSignup = (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, user_type) => {
     return dispatch => {
         dispatch(authLoginUserRequest())
         axios
-            .post('/jobboard-api/student-registration', {
+            .post('/jobboard-api/user-registration', {
                 username: username,
                 email: email,
+                password: password1,
                 password1: password1,
                 password2: password2,
                 last_name: last_name,
@@ -142,39 +175,7 @@ export const authStudentSignup = (username, email, password1, password2, last_na
                 birth_date: birth_date,
                 home_phone_number: home_phone_number,
                 mobile_phone_number: mobile_phone_number,
-                year: year,
-                cursus: cursus,
-                faculty: faculty
-            })
-            .then(res => {
-                dispatch(authLoginUserSuccess(res.data.key));
-                dispatch(checkAuthTimeout(3600))
-            })
-            .catch(err => {
-                dispatch(authLoginUserFailure(401, err))
-            })
-    }
-}
-
-export const authEnterpriseSignup = (username, email, password1, password2, last_name, first_name, birth_date, home_phone_number, mobile_phone_number, logo, office, company_url, address, description) => {
-    return dispatch => {
-        dispatch(authLoginUserRequest())
-        axios
-            .post('/jobboard-api/enterprise-registration', {
-                username: username,
-                email: email,
-                password1: password1,
-                password2: password2,
-                last_name: last_name,
-                first_name: first_name,
-                birth_date: birth_date,
-                home_phone_number: home_phone_number,
-                mobile_phone_number: mobile_phone_number,
-                logo: logo,
-                office: office,
-                company_url: company_url,
-                address: address,
-                description: description
+                user_type: user_type
             })
             .then(res => {
                 dispatch(authLoginUserSuccess(res.data.key));

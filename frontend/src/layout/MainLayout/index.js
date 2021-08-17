@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { getCurrentUser } from '../../store/actions/auth';
 
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/styles';
@@ -75,8 +76,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //-----------------------|| MAIN LAYOUT ||-----------------------//
+function mapStateToProps(state) {
+    return {
+        user: state.auth.user
+    };
+}
 
-const MainLayout = ({ children }) => {
+function mapDispatchToProps(dispatch) {
+    return {
+        currentUser: () => dispatch(getCurrentUser())
+    };
+}
+
+const MainLayout = ({ children, currentUser, user }) => {
     const classes = useStyles();
     const theme = useTheme();
     const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -90,6 +102,7 @@ const MainLayout = ({ children }) => {
 
     React.useEffect(() => {
         dispatch({ type: SET_MENU, opened: !matchDownMd });
+        dispatch(getCurrentUser());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchDownMd]);
 
@@ -136,4 +149,4 @@ MainLayout.propTypes = {
     children: PropTypes.node
 };
 
-export default MainLayout;
+export default connect(mapStateToProps, mapDispatchToProps)(MainLayout);

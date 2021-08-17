@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, permissions, request, response
 from rest_auth.registration.views import RegisterView
 
 from .models import Annonce, Enterprise, Student, Employee, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User
-from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, StudentSerializer, EmployeeSerializer, CursusSerializer, JobSerializer, StudentRegisterSerializer, EmployeeRegisterSerializer, EnterpriseRegisterSerializer
+from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, StudentSerializer, EmployeeSerializer, CursusSerializer, JobSerializer, UserRegisterSerializer
 from .filters import AnnonceFilter
 
 
@@ -67,6 +67,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+
+        if pk == "me":
+            return self.request.user
+
+        return super(UserViewSet, self).get_object()
 
 
 class EnterpriseViewSet(viewsets.ModelViewSet):
@@ -80,16 +89,6 @@ class MessageViewSet(viewsets.ModelViewSet):
     serializer_class = MessageSerializer
 
 
-class StudentRegistrationView(RegisterView):
+class UserRegistrationView(RegisterView):
 
-    serializer_class = StudentRegisterSerializer
-
-
-class EmployeeRegistrationView(RegisterView):
-
-    serializer_class = EmployeeRegisterSerializer
-
-
-class EntrepriseRegistrationView(RegisterView):
-
-    serializer_class = EnterpriseRegisterSerializer
+    serializer_class = UserRegisterSerializer

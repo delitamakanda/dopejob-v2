@@ -1,7 +1,7 @@
 from datetime import datetime
 import uuid
 from django.db import models
-from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
+from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, AbstractUser)
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import ugettext_lazy as _
@@ -69,8 +69,8 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     home_phone_number = models.CharField(max_length=20, blank=True)
     mobile_phone_number = models.CharField(max_length=30, blank=True)
-    network = models.ManyToManyField('self')
-    user_type = 'generic'
+    network = models.ManyToManyField('self', blank=True)
+    user_type = models.CharField(max_length=200, default='generic')
     username = models.CharField(
         verbose_name='username',
         max_length=255,
@@ -248,38 +248,39 @@ class Cursus(models.Model):
         return 'Cursus: {}'.format(self.title)
 
 
-class Employee(User):
+class Employee(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     office = models.CharField(max_length=30)
     faculty = models.ForeignKey(
         'Faculty', on_delete=models.CASCADE, blank=True, null=True)
     job = models.ForeignKey(
         'Job', on_delete=models.CASCADE, blank=True, null=True)
-    user_type = 'employee'
+    user_type = models.CharField(max_length=200, default='employee')
 
     def __str__(self):
         return 'Employee {}'.format(self.job.title)
 
 
-class Student(User):
+class Student(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cursus = models.ForeignKey(
         'Cursus', on_delete=models.CASCADE, blank=True, null=True)
     faculty = models.ForeignKey(
         'Faculty', on_delete=models.CASCADE, blank=True, null=True)
-    user_type = 'student'
     year = models.IntegerField()
 
     def __str__(self):
         return 'Student {}'.format(self.faculty.name)
 
 
-class Enterprise(User):
+class Enterprise(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     logo = models.ImageField(
         upload_to='enterprise_image/%Y/%m/%d/', blank=True)
     office = models.CharField(max_length=255)
     company_url = models.URLField(blank=True, null=True)
     address = models.TextField()
     description = models.CharField(max_length=300, blank=True)
-    user_type = 'enterprise'
 
     @property
     def logo_url(self):

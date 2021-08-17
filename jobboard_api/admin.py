@@ -25,6 +25,7 @@ class AnnonceAdmin(admin.ModelAdmin):
         return formfield
 
 
+
 class UserAdmin(BaseUserAdmin):
     # The forms to add and change user instances
     form = UserAdminChangeForm
@@ -33,12 +34,13 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('registration_number', 'email', 'admin',)
+    list_display = ('registration_number', 'email', 'admin', 'user_type',)
     list_filter = ('admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ()}),
-        ('Permissions', {'fields': ('admin',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name','username', 'active', 'mobile_phone_number', 'home_phone_number', 'birth_date', 'user_type',)}),
+        ('Network', { 'fields': ('network',)}),
+        ('Permissions', {'fields': ('admin', 'staff',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.

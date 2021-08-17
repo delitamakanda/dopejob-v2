@@ -75,7 +75,7 @@ const UpgradePlanCard = () => {
                             <AnimateButton>
                                 <Button
                                     component={Link}
-                                    href="https://berrydashboard.io/"
+                                    href="https://dopejob.herokuapp.com/"
                                     target="_blank"
                                     variant="contained"
                                     className={classes.button}

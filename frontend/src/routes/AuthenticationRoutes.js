@@ -42,4 +42,4 @@ const AuthenticationRoutes = (props) => {
     );
 };
 
-export default connect(mapStateToProps)(AuthenticationRoutes);
+export default connect(mapStateToProps, null)(AuthenticationRoutes);

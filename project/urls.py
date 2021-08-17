@@ -35,7 +35,7 @@ urlpatterns = [
     url(r'^account-confirm-email/$', VerifyEmailView.as_view(),
         name='account_email_verification_sent'),
 
-    path('jobboard-api', include('jobboard_api.urls')),
+    path('jobboard-api/', include('jobboard_api.urls')),
 
     url(r'.*', cache_page(settings.PAGE_CACHE_SECONDS)
         (TemplateView.as_view(template_name='index.html')), name='index'),

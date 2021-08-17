@@ -19,8 +19,8 @@ import * as authActions from './store/actions/auth';
 
 function loadLocaleData(locale) {
     switch (locale) {
-        case 'fr':
-            return import('./utils/locales/fr.json');
+        case 'en':
+            return import('./utils/locales/en.json');
         default:
             return import('./utils/locales/fr.json');
     }
