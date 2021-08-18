@@ -1,4 +1,5 @@
-# Getting Started with Create React App
+# Getting Started with Create React App 
+[![Django CI](https://github.com/delitamakanda/dopejob-v2/actions/workflows/django.yml/badge.svg?event=push)](https://github.com/delitamakanda/dopejob-v2/actions/workflows/django.yml)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
