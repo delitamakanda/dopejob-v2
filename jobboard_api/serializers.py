@@ -18,7 +18,8 @@ class UserSerializer(UserDetailsSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = User
-        exclude = ('network',)
+        exclude = ('network', 'active', 'staff',
+                   'admin', 'last_login',)
         write_only_fields = ('password',)
 
 
@@ -96,7 +97,6 @@ class UserRegisterSerializer(RegisterSerializer, UserSerializer):
     mobile_phone_number = serializers.CharField(required=False)
     last_name = serializers.CharField(required=True)
     birth_date = serializers.CharField(required=True)
-    network = serializers.CharField(required=False)
 
     def get_cleaned_data(self):
         super(UserRegisterSerializer, self).get_cleaned_data()
@@ -107,8 +107,7 @@ class UserRegisterSerializer(RegisterSerializer, UserSerializer):
             'email': self.validated_data.get('email', ''),
             'home_phone_number': self.validated_data.get('home_phone_number', ''),
             'birth_date': self.validated_data.get('birth_date', ''),
-            'mobile_phone_number': self.validated_data.get('mobile_phone_number', ''),
-            'network': self.validated_data.get('network', ''),
+            'mobile_phone_number': self.validated_data.get('mobile_phone_number', '')
         }
 
     def save(self, request):
@@ -117,6 +116,5 @@ class UserRegisterSerializer(RegisterSerializer, UserSerializer):
         user.mobile_phone_number = self.data.get('mobile_phone_number')
         user.birth_date = self.data.get('birth_date')
         user.user_type = self.data.get('user_type')
-        user.network = self.data.get('network')
         user.save()
         return user
