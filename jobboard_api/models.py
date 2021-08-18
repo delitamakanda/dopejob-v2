@@ -1,7 +1,8 @@
 from datetime import datetime
 import uuid
 from django.db import models
-from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, AbstractUser)
+from django.contrib.auth.models import (
+    BaseUserManager, AbstractBaseUser, AbstractUser)
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import ugettext_lazy as _
@@ -69,7 +70,7 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     home_phone_number = models.CharField(max_length=20, blank=True)
     mobile_phone_number = models.CharField(max_length=30, blank=True)
-    network = models.ManyToManyField('self', blank=True)
+    # network = models.ManyToManyField('self', blank=True)
     user_type = models.CharField(max_length=200, default='generic')
     username = models.CharField(
         verbose_name='username',
@@ -249,7 +250,8 @@ class Cursus(models.Model):
 
 
 class Employee(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     office = models.CharField(max_length=30)
     faculty = models.ForeignKey(
         'Faculty', on_delete=models.CASCADE, blank=True, null=True)
@@ -262,7 +264,8 @@ class Employee(models.Model):
 
 
 class Student(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     cursus = models.ForeignKey(
         'Cursus', on_delete=models.CASCADE, blank=True, null=True)
     faculty = models.ForeignKey(
@@ -274,7 +277,8 @@ class Student(models.Model):
 
 
 class Enterprise(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     logo = models.ImageField(
         upload_to='enterprise_image/%Y/%m/%d/', blank=True)
     office = models.CharField(max_length=255)
@@ -392,3 +396,20 @@ class Annonce(models.Model):
 
     def __str__(self):
         return 'Annonce {} - {}'.format(self.title, self.localization)
+
+
+class Contact(models.Model):
+    user_from = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='rel_from_set', on_delete=models.CASCADE)
+    user_to = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='rel_to_set', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return '{} follows {}'.format(self.user_from, self.user_to)
+
+
+# add to User models dynamically
+User.add_to_class('following', models.ManyToManyField(
+    'self', through=Contact, related_name='followers', symmetrical=False))
