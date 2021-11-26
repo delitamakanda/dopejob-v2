@@ -2,3 +2,4 @@
 
 1. https://javascript.plainenglish.io/image-loading-in-react-js-preloading-lazy-loading-intersectionobserver-fade-in-transitions-722c24f4d5fb
 2. https://css-tricks.com/table-of-contents-with-intersectionobserver/
+3. https://blog.frontendtony.com/add-auto-logout-to-a-react-app
