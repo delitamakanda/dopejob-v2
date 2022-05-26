@@ -1,7 +1,6 @@
 from django import forms
-from django.forms.widgets import SelectDateWidget
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import User, Student , Employee, Enterprise, Message
+from .models import User
 
 class UserAdminCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required

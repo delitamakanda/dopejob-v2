@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Annonce, User, Message, Faculty, Employee, Enterprise, Campus, Job, Cursus, Notification, Student
+from .models import Annonce, User, Message, Faculty, Enterprise, Campus, Job, Cursus, Notification, ManagementCV
 from .forms import UserAdminCreationForm, UserAdminChangeForm
 
 
@@ -34,11 +34,11 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('registration_number', 'email', 'admin', 'user_type',)
+    list_display = ('registration_number', 'email', 'admin',)
     list_filter = ('admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name','username', 'active', 'mobile_phone_number', 'home_phone_number', 'birth_date', 'user_type',)}),
+        ('Personal info', {'fields': ('first_name', 'is_pro', 'last_name','username', 'active', 'mobile_phone_number', 'home_phone_number', 'faculty', 'job', 'cursus', 'birth_date',)}),
         ('Permissions', {'fields': ('admin', 'staff',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -77,11 +77,10 @@ admin.site.register(Faculty)
 admin.site.register(Message, MessageFormAdmin)
 admin.site.register(Campus)
 admin.site.register(Job)
-admin.site.register(Employee)
-admin.site.register(Student)
 admin.site.register(Cursus)
 admin.site.register(Enterprise)
 admin.site.register(Notification)
+admin.site.register(ManagementCV)
 
 # Unregister the Group Model
 admin.site.unregister(Group)

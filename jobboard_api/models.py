@@ -1,8 +1,8 @@
 from datetime import datetime
 import uuid
-from django.db import models
+from djongo import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, AbstractUser)
+    BaseUserManager, AbstractBaseUser)
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.translation import ugettext_lazy as _
@@ -10,6 +10,7 @@ from django.conf import settings
 from django.utils.text import slugify
 from django.utils import timezone
 from django.urls import reverse
+from django.core.validators import URLValidator
 
 
 class UserManager(BaseUserManager):
@@ -68,16 +69,22 @@ class User(AbstractBaseUser):
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
-    home_phone_number = models.CharField(max_length=20, blank=True)
-    mobile_phone_number = models.CharField(max_length=30, blank=True)
-    # network = models.ManyToManyField('self', blank=True)
-    user_type = models.CharField(max_length=200, default='generic')
+    home_phone_number = models.CharField(max_length=20, blank=True, null=True)
+    mobile_phone_number = models.CharField(
+        max_length=30, blank=True, null=True)
+    is_pro = models.BooleanField(default=False)
+    cursus = models.ForeignKey(
+        'Cursus', on_delete=models.CASCADE, blank=True, null=True)
+    faculty = models.ForeignKey(
+        'Faculty', on_delete=models.CASCADE, blank=True, null=True)
+    job = models.ForeignKey(
+        'Job', on_delete=models.CASCADE, blank=True, null=True)
     username = models.CharField(
         verbose_name='username',
         max_length=255,
         unique=True,
-        null=True,
-        blank=True
+        blank=True,
+        null=True
     )
     objects = UserManager()
 
@@ -238,8 +245,19 @@ class Job(models.Model):
         return 'Job Title: {}'.format(self.title)
 
 
+class ManagementCV(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    file = models.FileField(
+        upload_to='cv_file/%Y/%m/%d/', blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'Job Title: {}'.format(self.title)
+
+
 class Cursus(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         verbose_name = 'Cursus'
@@ -249,42 +267,15 @@ class Cursus(models.Model):
         return 'Cursus: {}'.format(self.title)
 
 
-class Employee(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    office = models.CharField(max_length=30)
-    faculty = models.ForeignKey(
-        'Faculty', on_delete=models.CASCADE, blank=True, null=True)
-    job = models.ForeignKey(
-        'Job', on_delete=models.CASCADE, blank=True, null=True)
-    user_type = models.CharField(max_length=200, default='employee')
-
-    def __str__(self):
-        return 'Employee {}'.format(self.job.title)
-
-
-class Student(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    cursus = models.ForeignKey(
-        'Cursus', on_delete=models.CASCADE, blank=True, null=True)
-    faculty = models.ForeignKey(
-        'Faculty', on_delete=models.CASCADE, blank=True, null=True)
-    year = models.IntegerField()
-
-    def __str__(self):
-        return 'Student {}'.format(self.faculty.name)
-
-
 class Enterprise(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     logo = models.ImageField(
-        upload_to='enterprise_image/%Y/%m/%d/', blank=True)
-    office = models.CharField(max_length=255)
-    company_url = models.URLField(blank=True, null=True)
+        upload_to='enterprise_image/%Y/%m/%d/', blank=True, null=True)
+    company_url = models.URLField(
+        validators=[URLValidator], blank=True, null=True)
     address = models.TextField()
-    description = models.CharField(max_length=300, blank=True)
+    description = models.CharField(max_length=300, blank=True, null=True)
 
     @property
     def logo_url(self):
@@ -350,16 +341,17 @@ class Annonce(models.Model):
 
     title = models.CharField(max_length=100)
     slug = models.SlugField(
-        max_length=200, db_index=True, unique=True, null=True)
+        max_length=200, db_index=True, unique=True, blank=True, null=True)
     enterprise = models.ForeignKey(
         'Enterprise', on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True)
+    published_date = models.DateTimeField(null=True)
     is_available = models.BooleanField(default=True)
     localization = models.CharField(max_length=100, blank=True, null=True)
     contact_name = models.CharField(max_length=256, blank=True, null=True)
-    contact_email = models.EmailField(max_length=180, null=True)
-    url_redirection = models.URLField(max_length=740, blank=True)
+    contact_email = models.EmailField(max_length=180, blank=True, null=True)
+    url_redirection = models.URLField(max_length=740, validators=[
+                                      URLValidator], blank=True, null=True)
     language = models.CharField(
         max_length=2, choices=LANGUAGES_CHOICES, default=LANGUAGES_FRENCH)
     job_offer = models.CharField(
@@ -399,8 +391,10 @@ class Annonce(models.Model):
 
 
 class Contact(models.Model):
-    user_from = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='rel_from_set', on_delete=models.CASCADE)
-    user_to = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='rel_to_set', on_delete=models.CASCADE)
+    user_from = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='rel_from_set', on_delete=models.CASCADE)
+    user_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='rel_to_set', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:

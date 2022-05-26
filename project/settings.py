@@ -103,10 +103,27 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'djongo',
+        'NAME': config('DB_NAME'),
+        'ENFORCE_SCHEMA': False,
+        'LOGGING': {
+            'version': 1,
+            'loggers': {
+                'djongo': {
+                    'level': 'DEBUG',
+                    'propagate': False
+                }
+            }
+        }
     }
 }
 
@@ -221,3 +238,5 @@ CORS_ORIGIN_WHITELIST = [
 # Cache
 
 PAGE_CACHE_SECONDS = 1
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

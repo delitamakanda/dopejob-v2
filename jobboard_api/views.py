@@ -3,8 +3,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, permissions, request, response
 from rest_auth.registration.views import RegisterView
 
-from .models import Annonce, Enterprise, Student, Employee, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User
-from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, StudentSerializer, EmployeeSerializer, CursusSerializer, JobSerializer, UserRegisterSerializer
+from .models import Annonce, Enterprise, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User
+from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UserRegisterSerializer
 from .filters import AnnonceFilter
 
 
@@ -30,18 +30,6 @@ class CursusViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Cursus.objects.all()
     serializer_class = CursusSerializer
-
-
-class EmployeeViewSet(viewsets.ModelViewSet):
-
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
-
-
-class StudentViewSet(viewsets.ModelViewSet):
-
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
 
 
 class CampusViewSet(viewsets.ReadOnlyModelViewSet):

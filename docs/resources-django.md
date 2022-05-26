@@ -59,3 +59,4 @@
 24. https://css-tricks.com/creating-ui-components-in-svg/
 25. https://saasitive.com/tutorial/react-authenticated-component/
 26. https://github.com/SoftwareBrothers/admin-bro/tree/master/src
+27. https://www.djongomapper.com/get-started/

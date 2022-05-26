@@ -1,9 +1,29 @@
 from project.settings import *
-from celery.schedules import crontab
 
-import dj_database_url
-
-DATABASES['default'] = dj_database_url.config()
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': config('DB_NAME'),
+        'ENFORCE_SCHEMA': False,
+        'CLIENT': {
+                'host': config('DB_HOST'),
+                'port': config('DB_PORT'),
+                'username': config('DB_USERNAME'),
+                'password': config('DB_PASSWORD'),
+                'authSource':  config('DB_NAME'),
+                'authMechanism': 'SCRAM-SHA-1'
+        },
+        'LOGGING': {
+            'version': 1,
+            'loggers': {
+                'djongo': {
+                    'level': 'DEBUG',
+                    'propagate': False
+                }
+            }
+        }
+    }
+}
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -17,7 +37,7 @@ ADMINS = (
     ('Délita', 'delita.makanda@gmail.com'),
 )
 
-SEND_BROKEN_LINK_EMAILS=True
+SEND_BROKEN_LINK_EMAILS = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

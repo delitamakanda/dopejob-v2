@@ -1,9 +1,6 @@
-from django.contrib.contenttypes import fields
-from django.db import models
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
-from rest_auth.serializers import UserDetailsSerializer
-from .models import Annonce, Enterprise, Student, Employee, Cursus, Job, Campus, Faculty, Notification, Message, User
+from .models import Annonce, Enterprise, Cursus, Job, Campus, Faculty, Notification, Message, User
 from allauth.account.adapter import get_adapter
 
 class AnnonceSerializer(serializers.ModelSerializer):
@@ -53,24 +50,8 @@ class EnterpriseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Enterprise
-        exclude = ('active', 'staff',
-                   'admin', 'last_login', 'password',)
+        fields = '__all__'
 
-
-class StudentSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Student
-        exclude = ('active', 'staff',
-                   'admin', 'last_login', 'password',)
-
-
-class EmployeeSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Employee
-        exclude = ('active', 'staff',
-                   'admin', 'last_login', 'password',)
 
 
 class CursusSerializer(serializers.ModelSerializer):
