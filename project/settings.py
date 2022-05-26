@@ -113,7 +113,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': config('DB_NAME'),
+        'NAME': config('DB_NAME', 'dopejob', cast=str),
         'ENFORCE_SCHEMA': False,
         'LOGGING': {
             'version': 1,
