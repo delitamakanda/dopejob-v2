@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from pathlib import Path
 from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,6 +31,8 @@ SECRET_KEY = config('SECRET_KEY', 'dummy_secret_key')
 DEBUG = config('DEBUG', True)
 
 ALLOWED_HOSTS = ['*']
+
+INTERNAL_IPS = ['127.0.0.1']
 
 SITE_NAME = 'dopejob'
 SITE_ID = 1
@@ -56,7 +62,6 @@ THIRD_PARTY_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
-    'webpack_loader',
 ]
 
 PROJECT_APPS = [
@@ -165,25 +170,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+VITE_APP_DIR = os.path.join(PROJECT_DIR, 'src')
 
 STATICFILES_DIRS = (
-    # os.path.join(BASE_DIR, 'static/'),
-    os.path.join(BASE_DIR, "frontend", "build"),
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(VITE_APP_DIR, "dist"),
 )
 
-# webpack loader
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "CACHE": not DEBUG,
-        "BUNDLE_DIR_NAME": "frontend/build/",
-        "STATS_FILE": os.path.join(BASE_DIR, "frontend", "webpack-stats.json"),
-    }
-}
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# session
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_AGE = 1209600  # 2 weeks
+SESSION_COOKIE_DOMAIN = None
+SESSION_COOKIE_SECURE = False
+
+# email
 
 DEFAULT_FROM_EMAIL = 'no-reply@dopejob.com'
 
@@ -217,7 +225,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 999
+    'PAGE_SIZE': 999,
+    'SEARCH_PARAM': 'q',
+    'ORDERING_PARAM': 'ordering',
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {

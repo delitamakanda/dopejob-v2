@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
+{% load render_vite_bundle %}
 {% load i18n %}
 {% block title %}{% trans 'Dopejob V2' %}{% endblock %}
 {% block bodyId %}welcomePage{% endblock %}
 
 {% block content %}
 <div id="root"></div>
-{% endblock %}
 
+{% if debug %}
+<!-- This url will be different for each type of app. Point it to your main js file. -->
+<script type="module" src="http://localhost:3000/main.jsx"></script>
+{% else %}
+{% render_vite_bundle %}
+{% endif %}
+{% endblock %}

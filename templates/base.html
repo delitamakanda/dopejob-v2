@@ -1,8 +1,8 @@
-{% load render_bundle from webpack_loader %}
-{% load staticfiles %}
+{% load render_vite_bundle %}
+{% load static %}
 {% load i18n %}
 <!DOCTYPE html lang="en">
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8" />
@@ -17,19 +17,30 @@
   <meta name="keywords"
     content="jobboard" />
   <title>dopejob - {% block title %}{% endblock %}{% block head_title %}{% endblock %}</title>
-  {% render_bundle 'main' 'css' %}
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
     rel="stylesheet" />
+
+    {% if debug %}
+  <script type="module" src="http://localhost:3000/@vite/client"></script>
+  
+  <!-- If you're using vite with React, this next script will be needed for HMR -->
+  <script type="module">
+    import RefreshRuntime from 'http://localhost:3000/@react-refresh'
+    if (RefreshRuntime) {
+      RefreshRuntime.injectIntoGlobalHook(window)
+      window.$RefreshReg$ = () => { }
+      window.$RefreshSig$ = () => (type) => type
+      window.__vite_plugin_react_preamble_installed__ = true
+    }
+  </script>
+  {% endif %}
 </head>
 
 <body id="{% block bodyId %}genericPage{% endblock %}">
   <noscript>You need to enable JavaScript to run this app.</noscript>
   {% block content %}{% endblock %}
-  {% render_bundle 'main' 'js' %}
-  {#% render_bundle 'runtime-main' 'js' %#}
-  {#% render_bundle 'vendors' 'js' %#}
 </body>
 
 </html>

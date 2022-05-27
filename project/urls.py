@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls import url
 from django.views.decorators.cache import cache_page
 from django.views.generic.base import TemplateView
+from django.contrib.staticfiles.views import serve
 from rest_auth.registration.views import VerifyEmailView
 from rest_framework.schemas import get_schema_view
 from django.conf import settings
@@ -34,9 +35,10 @@ urlpatterns = [
         VerifyEmailView.as_view(), name='account_confirm_email'),
     url(r'^account-confirm-email/$', VerifyEmailView.as_view(),
         name='account_email_verification_sent'),
-
+    re_path(r'^static/(?P<path>.*)$', serve,
+            {'document_root': settings.STATIC_ROOT}),
     path('jobboard-api/', include('jobboard_api.urls')),
-
+    path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
     url(r'.*', cache_page(settings.PAGE_CACHE_SECONDS)
         (TemplateView.as_view(template_name='index.html')), name='index'),
 ]
