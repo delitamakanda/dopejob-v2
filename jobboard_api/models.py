@@ -69,6 +69,8 @@ class User(AbstractBaseUser):
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
+    website_url = models.URLField(
+        validators=[URLValidator], blank=True, null=True)
     home_phone_number = models.CharField(max_length=20, blank=True, null=True)
     mobile_phone_number = models.CharField(
         max_length=30, blank=True, null=True)
@@ -270,8 +272,8 @@ class Cursus(models.Model):
 class Enterprise(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    logo = models.ImageField(
-        upload_to='enterprise_image/%Y/%m/%d/', blank=True, null=True)
+    logo = models.URLField(
+        validators=[URLValidator], blank=True, null=True)
     company_url = models.URLField(
         validators=[URLValidator], blank=True, null=True)
     address = models.TextField()
