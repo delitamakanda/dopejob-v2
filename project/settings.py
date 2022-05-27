@@ -250,3 +250,8 @@ CORS_ORIGIN_WHITELIST = [
 PAGE_CACHE_SECONDS = 1
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# celery
+
+CELERY_BROKER_URL = config('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('REDIS_URL', 'redis://localhost:6379/0')

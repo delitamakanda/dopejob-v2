@@ -44,6 +44,11 @@ Run local server
 python3 manage.py runserver
 ```
 
+Run celery
+```bash
+celery -A project worker -l info
+```
+
 # commands
 ```
 python3 manage.py import_job_title_from_onisep_as_xml
