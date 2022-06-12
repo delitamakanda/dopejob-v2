@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_auth.registration.serializers import RegisterSerializer
-from .models import Annonce, Enterprise, Cursus, Job, Campus, Faculty, Notification, Message, User
+from .models import Annonce, Enterprise, Cursus, Job, Campus, Faculty, Notification, Message, User, UsersNewsletter
 from allauth.account.adapter import get_adapter
 
 class AnnonceSerializer(serializers.ModelSerializer):
@@ -9,6 +9,13 @@ class AnnonceSerializer(serializers.ModelSerializer):
         model = Annonce
         fields = ('id', 'title', 'slug', 'enterprise', 'created_date', 'published_date', 'is_available', 'localization', 'contact_name',
                   'contact_email', 'url_redirection', 'language', 'job_offer', 'job_fields', 'job_time', 'job_description', 'requirements',)
+
+
+class UsersNewsletterSerializer(serializers.Serializer):
+
+    class Meta:
+        model = UsersNewsletter
+        fields = '__all__'
 
 
 class UserSerializer(serializers.ModelSerializer):

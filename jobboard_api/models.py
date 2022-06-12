@@ -409,3 +409,11 @@ class Contact(models.Model):
 # add to User models dynamically
 User.add_to_class('following', models.ManyToManyField(
     'self', through=Contact, related_name='followers', symmetrical=False))
+
+
+class UsersNewsletter(models.Model):
+    email = models.EmailField(max_length=255)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email

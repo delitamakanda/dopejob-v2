@@ -5,7 +5,9 @@ import {
   MessageOutlined,
   UserOutlined,
   NotificationOutlined,
-  ReadOutlined
+  ReadOutlined,
+  LoginOutlined,
+  AccountBookOutlined
 } from '@ant-design/icons'
 import {
   Routes,
@@ -16,6 +18,8 @@ import {
 const { Header, Footer, Content } = Layout
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
+const Signup = React.lazy(() => import('./pages/Signup'))
+const Login = React.lazy(() => import('./pages/Login'))
 const Notification = React.lazy(() => import('./pages/Notification'))
 const Message = React.lazy(() => import('./pages/Message'))
 const Offer = React.lazy(() => import('./pages/Offer'))
@@ -24,6 +28,7 @@ import NoMatch from './pages/NoMatch'
 const BaseLayout = () => {
   const navigate = useNavigate()
   const currentYear = `dopejob ${new Date().getFullYear()}`
+  let a = []
   const items = [
       {
         key: '1',
@@ -50,6 +55,27 @@ const BaseLayout = () => {
         link: 'messages'
       }
   ]
+  const itemsNotConnected = [
+      {
+        key: '1',
+        icon: <ReadOutlined />,
+        label: 'nav 1',
+        link: '/'
+      },
+      {
+        key: '2',
+        icon: <LoginOutlined />,
+        label: 'nav 2',
+        link: 'signup'
+      },
+      {
+        key: '3',
+        icon: <AccountBookOutlined />,
+        label: 'nav 3',
+        link: 'login'
+      }
+  ]
+  a = localStorage.getItem('token') ? items : itemsNotConnected 
   return (
     <Layout
       style={{ minHeight: '100vh' }}
@@ -60,7 +86,7 @@ const BaseLayout = () => {
           theme="dark"
           mode="horizontal"
           defaultSelectedKeys={['1']}
-          items={items.map((item) => ({
+          items={a.map((item) => ({
             key: item.key,
             label: item.label,
             icon: item.icon,
@@ -123,6 +149,20 @@ const App = () => {
             element={
               <React.Suspense fallback={<>...</>}>
                 <Dashboard />
+              </React.Suspense>
+            } />
+          <Route
+            path='login/*'
+            element={
+              <React.Suspense fallback={<>...</>}>
+                <Login />
+              </React.Suspense>
+            } />
+          <Route
+            path='signup/*'
+            element={
+              <React.Suspense fallback={<>...</>}>
+                <Signup />
               </React.Suspense>
             } />
           <Route path='*' element={<NoMatch />} />
