@@ -16,7 +16,7 @@
     content="start a new carrer" />
   <meta name="keywords"
     content="jobboard" />
-  <title>dopejob - {% block title %}{% endblock %}{% block head_title %}{% endblock %}</title>
+  <title>dopejob v2</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap"
@@ -40,7 +40,14 @@
 
 <body id="{% block bodyId %}genericPage{% endblock %}">
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  {% block content %}{% endblock %}
+  <div id="root"></div>
+
+{% if debug %}
+<!-- This url will be different for each type of app. Point it to your main js file. -->
+<script type="module" src="http://localhost:3000/main.jsx"></script>
+{% else %}
+{% render_vite_bundle %}
+{% endif %}
 </body>
 
 </html>
