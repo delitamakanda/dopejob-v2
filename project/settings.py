@@ -108,29 +108,29 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': config('DB_NAME', 'dopejob', cast=str),
-        'ENFORCE_SCHEMA': False,
-        'LOGGING': {
-            'version': 1,
-            'loggers': {
-                'djongo': {
-                    'level': 'DEBUG',
-                    'propagate': False
-                }
-            }
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': config('DB_NAME', 'dopejob', cast=str),
+#         'ENFORCE_SCHEMA': False,
+#         'LOGGING': {
+#             'version': 1,
+#             'loggers': {
+#                 'djongo': {
+#                     'level': 'DEBUG',
+#                     'propagate': False
+#                 }
+#             }
+#         }
+#     }
+# }
 
 
 # Password validation
