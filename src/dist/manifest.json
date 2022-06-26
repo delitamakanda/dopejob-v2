@@ -1,66 +1,10 @@
 {
   "index.html": {
-    "file": "assets/index.304d8934.js",
+    "file": "assets/index.de571d58.js",
     "src": "index.html",
     "isEntry": true,
-    "dynamicImports": [
-      "pages/Dashboard.jsx",
-      "pages/Signup.jsx",
-      "pages/Login.jsx",
-      "pages/Notification.jsx",
-      "pages/Message.jsx",
-      "pages/Offer.jsx"
-    ],
     "css": [
       "assets/index.8e61b002.css"
-    ]
-  },
-  "pages/Dashboard.jsx": {
-    "file": "assets/Dashboard.8547c387.js",
-    "src": "pages/Dashboard.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ]
-  },
-  "pages/Signup.jsx": {
-    "file": "assets/Signup.43f09148.js",
-    "src": "pages/Signup.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ]
-  },
-  "pages/Login.jsx": {
-    "file": "assets/Login.6101b440.js",
-    "src": "pages/Login.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ]
-  },
-  "pages/Notification.jsx": {
-    "file": "assets/Notification.7a9b4e2b.js",
-    "src": "pages/Notification.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ]
-  },
-  "pages/Message.jsx": {
-    "file": "assets/Message.bba01d21.js",
-    "src": "pages/Message.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
-    ]
-  },
-  "pages/Offer.jsx": {
-    "file": "assets/Offer.48e6a606.js",
-    "src": "pages/Offer.jsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "index.html"
     ]
   }
 }
