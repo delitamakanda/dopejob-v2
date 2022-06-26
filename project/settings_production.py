@@ -1,29 +1,8 @@
 from project.settings import *
+import dj_database_url
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': config('DB_NAME'),
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-                'host': config('DB_HOST'),
-                'port': config('DB_PORT'),
-                'username': config('DB_USERNAME'),
-                'password': config('DB_PASSWORD'),
-                'authSource':  config('DB_NAME'),
-                'authMechanism': 'SCRAM-SHA-1'
-        },
-        'LOGGING': {
-            'version': 1,
-            'loggers': {
-                'djongo': {
-                    'level': 'DEBUG',
-                    'propagate': False
-                }
-            }
-        }
-    }
-}
+DATABASES['default'] = dj_database_url.config()
+
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
