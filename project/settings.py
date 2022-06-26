@@ -25,6 +25,7 @@ SECRET_KEY = config('SECRET_KEY', 'dummy_secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', True)
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

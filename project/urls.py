@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls import url
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 from django.views.generic.base import TemplateView
 from django.contrib.staticfiles.views import serve
 from rest_auth.registration.views import VerifyEmailView
@@ -39,8 +39,7 @@ urlpatterns = [
             {'document_root': settings.STATIC_ROOT}),
     path('jobboard-api/', include('jobboard_api.urls')),
     path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
-    path(r'', cache_page(settings.PAGE_CACHE_SECONDS)
-        (TemplateView.as_view(template_name='frontend.html'))),
+    path(r'', TemplateView.as_view(template_name='frontend.html')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
