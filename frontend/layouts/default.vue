@@ -24,18 +24,32 @@
 </template>
 
 <script>
+import { useUserStore } from '~/stores/user';
+
 export default {
     setup() {
+        const userStore = useUserStore();
         const links = [
             { name: 'Home', to: '/' },
             { name: 'About us', to: '/about-us' },
             { name: 'Team', to: '/team' },
             { name: 'Services', to: '/services' },
             { name: 'Blog', to: '/blog'},
-            { name: 'Contact us', to: '/contact-us' },
-            { name: 'Login', to: '/login' },
-            { name: 'Register', to: '/register' },
+            { name: 'Contact us', to: '/contact-us' }
         ];
+
+        if (!userStore.user.isAuthenticated) {
+            links.push(
+                { name: 'Login', to: '/login' },
+                { name: 'Register', to: '/register' }
+            );
+        } else {
+            links.push(
+                { name: 'Logout', to: '/logout' },
+                { name: 'Create job', to: '/createjob' },
+                { name: 'My jobs', to: '/myjobs' }
+            );
+        }
 
         return {
             links
