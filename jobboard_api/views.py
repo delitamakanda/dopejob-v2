@@ -1,16 +1,15 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, permissions, request, response
-from rest_auth.registration.views import RegisterView
 
 from .models import Annonce, Enterprise, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User, UsersNewsletter
-from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UserRegisterSerializer, UsersNewsletterSerializer
+from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UsersNewsletterSerializer
 from .filters import AnnonceFilter
 
 
 class UsersNewsletterViewSet(viewsets.ModelViewSet):
     queryset = UsersNewsletter.objects.all()
-    serializer_class = UserRegisterSerializer
+    serializer_class = UserSerializer
     pagination_class = None  # FIX
 
 
@@ -82,7 +81,3 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
 
-
-class UserRegistrationView(RegisterView):
-
-    serializer_class = UserRegisterSerializer

@@ -34,6 +34,8 @@ INTERNAL_IPS = ['127.0.0.1']
 SITE_NAME = 'dopejob'
 SITE_ID = 1
 
+USER_CREATE_PASSWORD_RETYPE = config('USER_CREATE_PASSWORD_RETYPE', True)
+
 # Application definition
 
 DJANGO_CORE_APPS = [
@@ -50,15 +52,11 @@ DJANGO_CORE_APPS = [
 THIRD_PARTY_APPS = [
     'dj_pagination',
     'storages',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'rest_auth',
-    'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
+    'djoser',
 ]
 
 PROJECT_APPS = [
@@ -112,24 +110,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME': config('DB_NAME', 'dopejob', cast=str),
-#         'ENFORCE_SCHEMA': False,
-#         'LOGGING': {
-#             'version': 1,
-#             'loggers': {
-#                 'djongo': {
-#                     'level': 'DEBUG',
-#                     'propagate': False
-#                 }
-#             }
-#         }
-#     }
-# }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -168,11 +148,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-VITE_APP_DIR = os.path.join(BASE_DIR, 'src')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(VITE_APP_DIR, "dist"),
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -200,22 +178,14 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_CONFIRM_EMAIL_ON_GET = False
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_USERNAME_REQUIRED = False
 
 AUTH_USER_MODEL = 'jobboard_api.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_FILTER_BACKENDS': [
@@ -227,11 +197,6 @@ REST_FRAMEWORK = {
     'ORDERING_PARAM': 'ordering',
 }
 
-REST_AUTH_REGISTER_SERIALIZERS = {
-    'REGISTER_SERIALIZER': 'jobboard_api.serializers.UserRegisterSerializer',
-    # 'USER_DETAILS_SERIALIZER': 'jobboard_api.serializers.UserSerializer'
-}
-
 # cors header
 
 CORS_ALLOW_CREDENTIALS = True
@@ -240,6 +205,7 @@ CORS_ORIGIN_WHITELIST = [
     'https://dopejob.herokuapp.com',
     'http://localhost:8000',
     'http://localhost:59961',
+    'http://localhost:3000',
 ]
 
 # Cache

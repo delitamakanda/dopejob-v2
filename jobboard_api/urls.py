@@ -15,7 +15,5 @@ router.register('user', views.UserViewSet)
 router.register('message', views.MessageViewSet)
 
 urlpatterns = [
-    path('user-registration', views.UserRegistrationView.as_view(),
-         name="user_registration"),
     path('', include(router.urls))
 ]

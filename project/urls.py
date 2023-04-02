@@ -16,28 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls import url
-# from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page
 from django.views.generic.base import TemplateView
 from django.contrib.staticfiles.views import serve
-from rest_auth.registration.views import VerifyEmailView
 from rest_framework.schemas import get_schema_view
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
-    path('rest-auth/', include('rest_auth.urls')),
-    path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('accounts/', include('allauth.urls')),
+    path('api/v1/', include('djoser.urls')),
+    path('api/v1/jobs/', include('jobboard_api.urls')),
     path('api-schemas/', get_schema_view()),
-    url(r'^account-confirm-email/(?P<key>[-:\w]+)/$',
-        VerifyEmailView.as_view(), name='account_confirm_email'),
-    url(r'^account-confirm-email/$', VerifyEmailView.as_view(),
-        name='account_email_verification_sent'),
     re_path(r'^static/(?P<path>.*)$', serve,
             {'document_root': settings.STATIC_ROOT}),
-    path('jobboard-api/', include('jobboard_api.urls')),
     path('offline.html', (TemplateView.as_view(template_name="offline.html")), name='offline.html'),
     path(r'', TemplateView.as_view(template_name='frontend.html')),
 ]
