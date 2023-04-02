@@ -23,7 +23,7 @@ class UsersNewsletterViewSet(viewsets.ModelViewSet):
 class AnnonceViewSet(viewsets.ModelViewSet):
     queryset = Annonce.objects.all()
     serializer_class = AnnonceSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter, )
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filterset_class = AnnonceFilter
     search_fields = ['^title', 'language',
                      '^job_description', '^requirements', 'enterprise']
