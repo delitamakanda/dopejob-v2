@@ -8,5 +8,5 @@ python manage.py runserver
 
 # run frontend
 ```bash
-npm run dev
+cd frontend && npm run dev
 ```
