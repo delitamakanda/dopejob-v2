@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import URLValidator
+from django.template import defaultfilters
 
 
 class UserManager(BaseUserManager):
@@ -288,6 +289,18 @@ class Enterprise(models.Model):
         return 'Enterprise {}'.format(self.office)
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+        ordering = ('title',)
+
+    def __str__(self):
+        return 'Category: {}'.format(self.title)
+
+
 class Annonce(models.Model):
     LANGUAGES_FRENCH = 'FR'
     LANGUAGES_ENGLISH = 'EN'
@@ -341,6 +354,9 @@ class Annonce(models.Model):
         (FIELD_MISCELLARY, 'Miscellary'),
     ]
 
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False)
+    category = models.ForeignKey(Category, related_name='annonces', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=100)
     slug = models.SlugField(
         max_length=200, db_index=True, unique=True, blank=True, null=True)
@@ -363,12 +379,16 @@ class Annonce(models.Model):
     job_time = models.CharField(
         max_length=3, choices=TIME_CHOICES, default=OFFER_FULLTIME)
     job_description = models.CharField(max_length=4096, blank=True, null=True)
+    position_salary = models.CharField(max_length=256, blank=True, null=True)
     requirements = models.CharField(max_length=4096, blank=True, null=True)
 
     class Meta:
         ordering = ('published_date',)
         verbose_name = 'Annonce'
         verbose_name_plural = 'Annonces'
+
+    def created_at_formatted(self):
+        return defaultfilters.date(self.created_date, 'M d, Y')
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)

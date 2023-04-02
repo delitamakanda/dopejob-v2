@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import Annonce, User, Message, Faculty, Enterprise, Campus, Job, Cursus, Notification, ManagementCV, UsersNewsletter
+from .models import Category, Annonce, User, Message, Faculty, Enterprise, Campus, Job, Cursus, Notification, ManagementCV, UsersNewsletter
 from .forms import UserAdminCreationForm, UserAdminChangeForm
 
 
@@ -86,6 +86,7 @@ admin.site.register(Cursus)
 admin.site.register(Enterprise)
 admin.site.register(Notification)
 admin.site.register(ManagementCV)
+admin.site.register(Category)
 admin.site.register(UsersNewsletter, UsersNewsletterAdmin)
 
 # Unregister the Group Model

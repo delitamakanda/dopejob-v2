@@ -1,12 +1,18 @@
 from rest_framework import serializers
-from .models import Annonce, Enterprise, Cursus, Job, Campus, Faculty, Notification, Message, User, UsersNewsletter
+from .models import Annonce, Enterprise, Cursus, Job, Campus, Faculty, Notification, Message, User, UsersNewsletter, Category
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 class AnnonceSerializer(serializers.ModelSerializer):
+    category = CategorySerializer(read_only=True)
 
     class Meta:
         model = Annonce
         fields = ('id', 'title', 'slug', 'enterprise', 'created_date', 'published_date', 'is_available', 'localization', 'contact_name',
-                  'contact_email', 'url_redirection', 'language', 'job_offer', 'job_fields', 'job_time', 'job_description', 'requirements',)
+                  'contact_email', 'url_redirection', 'language', 'job_offer', 'job_fields', 'job_time', 'job_description', 'requirements', 'category', 'position_salary')
 
 
 class UsersNewsletterSerializer(serializers.Serializer):

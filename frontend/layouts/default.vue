@@ -1,7 +1,35 @@
 <template>
     <v-app>
+        <v-navigation-drawer
+        v-model="drawer"
+        :rail="rail"
+        permanent
+        @click="rail = !rail "
+        v-if="userStore.user.isAuthenticated"
+      >
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
+          title="John Leider"
+          nav
+        >
+          <template v-slot:append>
+            <v-btn
+              variant="text"
+              icon="mdi-chevron-left"
+              @click.stop="rail = !rail"
+            ></v-btn>
+          </template>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
+          <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
         <v-app-bar app flat :fixed="true" :elevation="2">
-            <v-app-bar-nav-icon />
             <NuxtLink to="/">Dopejob</NuxtLink>
             <v-spacer></v-spacer>
             <NuxtLink to="/">Home</NuxtLink>
@@ -29,13 +57,18 @@ import { useUserStore } from '~/stores/user';
 export default {
     setup() {
         const userStore = useUserStore();
+        const drawer = ref(true);
+        const rail = ref(true);
+        const items = [
+          { title: 'Home', icon: 'mdi-home-city' },
+          /* { title: 'My Account', icon: 'mdi-account' },
+          { title: 'Users', icon: 'mdi-account-group-outline' },*/
+        ];
         const links = [
             { name: 'Home', to: '/' },
-            { name: 'About us', to: '/about-us' },
             { name: 'Team', to: '/team' },
             { name: 'Services', to: '/services' },
             { name: 'Blog', to: '/blog'},
-            { name: 'Contact us', to: '/contact-us' }
         ];
 
         if (!userStore.user.isAuthenticated) {
@@ -45,14 +78,21 @@ export default {
             );
         } else {
             links.push(
-                { name: 'Logout', to: '/logout' },
                 { name: 'Create job', to: '/createjob' },
                 { name: 'My jobs', to: '/myjobs' }
             );
         }
+        const openRail = () => {
+            rail.value =!rail.value;
+        }
 
         return {
-            links
+            links,
+            drawer,
+            rail,
+            items,
+            userStore,
+            openRail
         }
     }
 }

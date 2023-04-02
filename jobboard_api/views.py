@@ -2,9 +2,16 @@ from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, filters, permissions, request, response
 
-from .models import Annonce, Enterprise, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User, UsersNewsletter
-from .serializers import AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UsersNewsletterSerializer
+from .models import Category, Annonce, Enterprise, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User, UsersNewsletter
+from .serializers import CategorySerializer, AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UsersNewsletterSerializer
 from .filters import AnnonceFilter
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    pagination_class = None  # FIX
+    permission_classes = (permissions.AllowAny,)
 
 
 class UsersNewsletterViewSet(viewsets.ModelViewSet):
@@ -22,6 +29,7 @@ class AnnonceViewSet(viewsets.ModelViewSet):
                      '^job_description', '^requirements', 'enterprise']
     lookup_field = 'slug'
     pagination_class = None  # FIX
+    permission_classes = (permissions.AllowAny,)
 
 
 class JobViewSet(viewsets.ModelViewSet):
