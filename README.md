@@ -1,12 +1,12 @@
 # Dopejob
 [![Django CI](https://github.com/delitamakanda/dopejob-v2/actions/workflows/django.yml/badge.svg?event=push)](https://github.com/delitamakanda/dopejob-v2/actions/workflows/django.yml)
 
-# run mongodb in local
+# run server
 ```bash
-mongod --dbpath /usr/local/mongodb
+python manage.py runserver
 ```
 
 # run frontend
 ```bash
-cd frontend/ && npm start
+npm run dev
 ```
