@@ -99,7 +99,7 @@ class User(AbstractBaseUser):
         verbose_name_plural = 'Users'
 
     def __str__(self):
-        return 'User {} {}'.format(self.last_name, self.first_name)
+        return 'User {}'.format(self.email)
 
     def get_full_name(self):
         return self.email
@@ -272,9 +272,10 @@ class Cursus(models.Model):
 
 class Enterprise(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, related_name='user', on_delete=models.CASCADE)
     logo = models.URLField(
         validators=[URLValidator], blank=True, null=True)
+    company_name = models.CharField(max_length=255, blank=True, null=True)
     company_url = models.URLField(
         validators=[URLValidator], blank=True, null=True)
     address = models.TextField()
@@ -286,7 +287,7 @@ class Enterprise(models.Model):
             return self.logo.url
 
     def __str__(self):
-        return 'Enterprise {}'.format(self.office)
+        return 'Enterprise {}'.format(self.company_name)
 
 
 class Category(models.Model):
@@ -356,12 +357,11 @@ class Annonce(models.Model):
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-    category = models.ForeignKey(Category, related_name='annonces', on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=100)
     slug = models.SlugField(
         max_length=200, db_index=True, unique=True, blank=True, null=True)
     enterprise = models.ForeignKey(
-        'Enterprise', on_delete=models.CASCADE)
+        'Enterprise', related_name='enterprise', on_delete=models.CASCADE)
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(null=True)
     is_available = models.BooleanField(default=True)

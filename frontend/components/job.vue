@@ -1,12 +1,18 @@
 <script setup>
 const props = defineProps({
     my: {
-        type: Boolean,
+        type: [Boolean],
         default: false
+    },
+    job: {
+        type: [Object],
+        required: true
     }
 })
 </script>
 
 <template>
-    job card
+    <div>
+        {{ job.title }} {{ job.position_salary }} {{ job }}
+    </div>
 </template>
