@@ -13,6 +13,11 @@ const props = defineProps({
 
 <template>
     <div>
-        {{ job.title }} {{ job.position_salary }} {{ job }}
+        <NuxtLink :to="`/browse/${job.id}`">
+            {{ job.title }} 
+            <br/>{{ job.position_salary }}
+            <br/>
+            {{ job }}
+        </NuxtLink>
     </div>
 </template>

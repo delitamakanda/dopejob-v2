@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework as filters_drf
+
 from rest_framework import viewsets, filters, permissions, request, response
 
 from .models import Category, Annonce, Enterprise, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User, UsersNewsletter
 from .serializers import CategorySerializer, AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UsersNewsletterSerializer
-from .filters import AnnonceFilter
+from .filters import AnnonceFilter, AnnonceV2Filter
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -23,11 +25,13 @@ class UsersNewsletterViewSet(viewsets.ModelViewSet):
 class AnnonceViewSet(viewsets.ModelViewSet):
     queryset = Annonce.objects.all()
     serializer_class = AnnonceSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    filterset_class = AnnonceFilter
-    search_fields = ['^title', 'language',
-                     '^job_description', '^requirements', 'enterprise']
-    lookup_field = 'slug'
+    search_fields = ['title',
+                     'job_description', 'requirements', 'enterprise__company_name']
+    ordering_fields = ['id', 'published_date', 'updated_date']
+    # filterset_class = AnnonceFilter
+    filterset_class = AnnonceV2Filter
+    filter_backends = (filters_drf.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    lookup_field = 'id' # slug
     pagination_class = None  # FIX
     permission_classes = (permissions.AllowAny,)
 
