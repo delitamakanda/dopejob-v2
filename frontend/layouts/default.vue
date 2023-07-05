@@ -5,7 +5,7 @@
         :rail="rail"
         permanent
         @click="rail = !rail "
-        v-if="userStore.user.isAuthenticated"
+        v-if="userStore?.user?.isAuthenticated"
       >
         <v-list-item
           prepend-avatar="https://randomuser.me/api/portraits/men/85.jpg"
@@ -34,6 +34,7 @@
             <v-spacer></v-spacer>
             <NuxtLink to="/">Home</NuxtLink>
             <NuxtLink to="/browse">Browse</NuxtLink>
+            <NuxtLink v-if="userStore?.user?.isAuthenticated" to="/" @click="logout">Logout</NuxtLink>
         </v-app-bar>
 
         <v-main>
@@ -51,49 +52,29 @@
     </v-app>
 </template>
 
-<script>
+<script setup>
 import { useUserStore } from '~/stores/user';
 
-export default {
-    setup() {
-        const userStore = useUserStore();
-        const drawer = ref(true);
-        const rail = ref(true);
-        const items = [
-          { title: 'Home', icon: 'mdi-home-city' },
-          /* { title: 'My Account', icon: 'mdi-account' },
-          { title: 'Users', icon: 'mdi-account-group-outline' },*/
-        ];
-        const links = [
-            { name: 'Home', to: '/' },
-            { name: 'Team', to: '/team' },
-            { name: 'Services', to: '/services' },
-            { name: 'Blog', to: '/blog'},
-        ];
+const userStore = useUserStore();
+const drawer = ref(true);
+const rail = ref(true);
+const links = ref([
+    { name: 'Home', to: '/' },
+    { name: 'Blog', to: '/blog'},
+]);
 
-        if (!userStore.user.isAuthenticated) {
-            links.push(
-                { name: 'Login', to: '/login' },
-                { name: 'Register', to: '/register' }
-            );
-        } else {
-            links.push(
-                { name: 'Create job', to: '/createjob' },
-                { name: 'My jobs', to: '/myjobs' }
-            );
-        }
-        const openRail = () => {
-            rail.value =!rail.value;
-        }
-
-        return {
-            links,
-            drawer,
-            rail,
-            items,
-            userStore,
-            openRail
-        }
-    }
+if (!userStore?.user?.isAuthenticated) {
+    links.value.push(
+        { name: 'Login', to: '/login' },
+        { name: 'Register', to: '/register' }
+    );
+} else {
+    links.value.push(
+        { name: 'Create job', to: '/createjob' },
+        { name: 'My jobs', to: '/myjobs' }
+    );
+}
+async function logout() {
+  await userStore.clearToken();
 }
 </script>
