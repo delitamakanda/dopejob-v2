@@ -34,9 +34,9 @@ async function handleSubmit(e) {
           errors.value.push(err.response._data[property]);
         }
         console.error(JSON.stringify(err.response));
-      } else if (error.message) {
+      } else if (err.message) {
         errors.value.push("Something went wrong");
-        console.error(JSON.stringify(error));
+        console.error(JSON.stringify(err));
       }
     });
 }
@@ -98,8 +98,8 @@ async function handleSubmit(e) {
  
      <v-divider></v-divider>
 
-    <div v-if="errors?.value?.length > 0">
-      <v-alert color="error" v-for="error in errors.value" :key="error">
+    <div v-if="errors?.length > 0">
+      <v-alert color="error" v-for="error in errors" :key="error">
         {{error}}
       </v-alert>
     </div>

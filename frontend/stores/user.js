@@ -13,19 +13,19 @@ export const useUserStore = defineStore({
         initStore() {
             this.user.isAuthenticated = false
 
-            if (localStorage.getItem('token')) {
-                this.user.token = localStorage.getItem('token')
+            if (window.localStorage.getItem('token')) {
+                this.user.token = window.localStorage.getItem('token')
                 this.user.isAuthenticated = true
             }
         },
         setToken(token) {
             this.user.token = token
-            localStorage.setItem('token', token)
+            window.localStorage.setItem('token', token)
             this.user.isAuthenticated = true
         },
         clearToken() {
             this.user.token = null
-            localStorage.removeItem('token')
+            window.localStorage.removeItem('token')
             this.user.isAuthenticated = false
         }
 
