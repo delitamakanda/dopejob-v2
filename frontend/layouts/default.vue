@@ -24,9 +24,10 @@
         <v-divider></v-divider>
 
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
-          <v-list-item prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>
+          <v-list-item to="/" prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item>
+          <v-list-item to="/account" prepend-icon="mdi-account" title="My Account" value="account"></v-list-item>
+          <v-list-item to="/createjob" prepend-icon="mdi-account-group-outline" title="Create job" value="createjob"></v-list-item>
+          <v-list-item to="/myjobs" prepend-icon="mdi-account-group-outline" title="My jobs" value="myjobs"></v-list-item>
         </v-list>
       </v-navigation-drawer>
         <v-app-bar app flat :fixed="true" :elevation="2">
@@ -34,6 +35,8 @@
             <v-spacer></v-spacer>
             <NuxtLink to="/">Home</NuxtLink>
             <NuxtLink to="/browse">Browse</NuxtLink>
+            <NuxtLink v-if="!userStore?.user?.isAuthenticated" to="/register">Signup</NuxtLink>
+            <NuxtLink v-if="!userStore?.user?.isAuthenticated" to="/login">Login</NuxtLink>
             <NuxtLink v-if="userStore?.user?.isAuthenticated" to="/" @click="logout">Logout</NuxtLink>
         </v-app-bar>
 
@@ -63,17 +66,6 @@ const links = ref([
     { name: 'Blog', to: '/blog'},
 ]);
 
-if (!userStore?.user?.isAuthenticated) {
-    links.value.push(
-        { name: 'Login', to: '/login' },
-        { name: 'Register', to: '/register' }
-    );
-} else {
-    links.value.push(
-        { name: 'Create job', to: '/createjob' },
-        { name: 'My jobs', to: '/myjobs' }
-    );
-}
 async function logout() {
   await userStore.clearToken();
 }
