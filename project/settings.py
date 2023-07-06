@@ -52,11 +52,11 @@ DJANGO_CORE_APPS = [
 THIRD_PARTY_APPS = [
     'dj_pagination',
     'storages',
+    'djoser',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
-    'djoser',
 ]
 
 PROJECT_APPS = [
@@ -174,12 +174,16 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
+    # 'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 
 AUTH_USER_MODEL = 'jobboard_api.User'
+
+DJOSER = {
+    'USER_ID_FIELD': 'registration_number',
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -187,6 +191,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',

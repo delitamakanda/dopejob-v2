@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.authtoken')),
+    path("api/v1/", include("djoser.social.urls")),
     path('api/v1/jobs/', include('jobboard_api.urls')),
     path('api-schemas/', get_schema_view()),
     re_path(r'^static/(?P<path>.*)$', serve,
