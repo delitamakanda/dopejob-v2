@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from .models import Annonce, Enterprise, Cursus, Job, Campus, Faculty, Notification, Message, User, UsersNewsletter, Category
 
+class EnterpriseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Enterprise
+        fields = '__all__'
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -8,6 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class AnnonceSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
+    enterprise = EnterpriseSerializer(read_only=True)
 
     class Meta:
         model = Annonce
@@ -55,14 +62,6 @@ class CampusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campus
         fields = '__all__'
-
-
-class EnterpriseSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Enterprise
-        fields = '__all__'
-
 
 
 class CursusSerializer(serializers.ModelSerializer):

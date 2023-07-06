@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters_drf
 
-from rest_framework import viewsets, filters, permissions, request, response
+from rest_framework import viewsets, filters, permissions, request, response, authentication
 
 from .models import Category, Annonce, Enterprise, Cursus, Job, Cursus, Campus, Faculty, Notification, Message, User, UsersNewsletter
 from .serializers import CategorySerializer, AnnonceSerializer, EnterpriseSerializer, UserSerializer, MessageSerializer, NotificationSerializer, FacultySerializer, CampusSerializer, CursusSerializer, JobSerializer, UsersNewsletterSerializer
@@ -23,7 +23,7 @@ class UsersNewsletterViewSet(viewsets.ModelViewSet):
 
 
 class AnnonceViewSet(viewsets.ModelViewSet):
-    queryset = Annonce.objects.all()
+    queryset = Annonce.objects.all().filter(is_available=True)
     serializer_class = AnnonceSerializer
     search_fields = ['title',
                      'job_description', 'requirements', 'enterprise__company_name']
@@ -36,12 +36,25 @@ class AnnonceViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
 
 
+class MyAnnonceViewSet(viewsets.ModelViewSet):
+    queryset = Annonce.objects.all()
+    serializer_class = AnnonceSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = [authentication.TokenAuthentication]
+    filter_backends = (filters_drf.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    lookup_field = 'id'
+    pagination_class = None  # FIX
+    search_fields = ['title',
+                         'job_description','requirements', 'enterprise__company_name']
+
+    def get_queryset(self):
+        return Annonce.objects.filter(enterprise__user=self.request.user)
+
 class JobViewSet(viewsets.ModelViewSet):
 
     queryset = Job.objects.all()
     serializer_class = JobSerializer
     pagination_class = None  # FIX
-
 
 class CursusViewSet(viewsets.ReadOnlyModelViewSet):
 
