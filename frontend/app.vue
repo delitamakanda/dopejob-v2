@@ -16,5 +16,4 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
-@use './settings';
 </style>
