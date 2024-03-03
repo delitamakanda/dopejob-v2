@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
     my: {
         type: [Boolean],
         default: false
@@ -12,12 +12,12 @@ const props = defineProps({
 </script>
 
 <template>
-    <div>
-        <NuxtLink :to="`/browse/${job.id}`">
-            {{ job.title }} 
-            <br/>{{ job.position_salary }}
-            <br/>
-            {{ job }}
-        </NuxtLink>
-    </div>
+  <div>
+    <NuxtLink :to="`/browse/${job.id}`">
+      {{ job.title }} 
+      <br>{{ job.position_salary }}
+      <br>
+      {{ job }}
+    </NuxtLink>
+  </div>
 </template>

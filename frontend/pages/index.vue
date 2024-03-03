@@ -1,25 +1,23 @@
 <script setup>
-const { data: jobs } = await useFetch('http://localhost:8000/api/v1/jobs/annonce/?ordering=-published_date');
+import {BASE_API_URL} from '../helpers/constants'
+const { data: jobs } = await useFetch(`${BASE_API_URL}/jobs/annonce/?ordering=-published_date`)
 </script>
 
 <template>
-    <v-container>
-        <div>
-
-            front page
-            <NuxtLink to="/browse">Browse</NuxtLink>
-        </div>
-        <div>
-            Newest jobs
-            
-            <Suspense>
-                <Job v-for="job in jobs" :key="job.id" :job="job" />
-                <template #fallback>
-                    <p>Loading...</p>
-                </template>
-            </Suspense>
-
-
-        </div>
-    </v-container>
+  <div v-if="jobs">
+    front page
+    <NuxtLink to="/browse">
+      Browse
+    </NuxtLink>
+    <div>
+      Newest jobs
+          
+      <Suspense>
+        <Job v-for="job in jobs" :key="job.id" :job="job" />
+        <template #fallback>
+          <p>Loading...</p>
+        </template>
+      </Suspense>
+    </div>
+  </div>
 </template>
