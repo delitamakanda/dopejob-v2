@@ -1,6 +1,6 @@
 <script setup>
 import {BASE_API_URL} from '../helpers/constants'
-const { data: jobs } = await useFetch(`${BASE_API_URL}/jobs/annonce/?ordering=-published_date`)
+const { data: jobs } = await useFetch(`${BASE_API_URL}jobs/annonce/?ordering=-published_date`)
 </script>
 
 <template>

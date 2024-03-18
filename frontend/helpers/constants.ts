@@ -3,4 +3,4 @@ export const OFFERS = ['CDI', 'CDD', 'FRE', 'STA', 'ALT']
 export const TYPES = ['FUL', 'HAL']
 export const LANG = ['FR', 'EN']
 
-export const BASE_API_URL = `${process.env.NUXT_PUBLIC_SITE_URL}/api/v1/`
+export const BASE_API_URL = 'http://127.0.0.1:8000/api/v1/'
