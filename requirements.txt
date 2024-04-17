@@ -34,7 +34,7 @@ django-webpack-loader==1.1.0
 djangorestframework==3.11.2
 djangorestframework-simplejwt==4.3.0
 djoser==2.1.0
-gunicorn==20.1.0
+gunicorn==22.0.0
 html2text==2018.1.9
 html5lib==1.0.1
 idna==3.7
