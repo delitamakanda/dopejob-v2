@@ -1,7 +1,7 @@
 <template>
-    <v-container>
-        Create job
-    </v-container>
+  <v-container>
+    Create job
+  </v-container>
 </template>
 
 <script>
