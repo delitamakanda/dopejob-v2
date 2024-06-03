@@ -58,13 +58,9 @@
               <div class="p-1">
                 <template v-for="(p, i) in profileMenuOptions" :key="i">
                   <HMenuItem v-if="!p.divider" v-slot="{ active }">
-                    <button
-                      :class="[active && 'bg-muted']"
-                      class="inline-flex w-full items-center rounded-md p-2 text-sm font-medium"
-                      @click="p.href"
-                    >
+                    <NuxtLink :class="[active && 'bg-muted']" class="inline-flex w-full items-center rounded-md p-2 text-sm font-medium" :to="p.href">
                       {{ p.title }}
-                    </button>
+                    </NuxtLink>
                   </HMenuItem>
                   <hr v-if="p.divider" class="my-1">
                 </template>
@@ -86,10 +82,10 @@ const toggleTheme = () => {
     mode.value = mode.value === 'dark'? 'light' : 'dark'
 }
 const profileMenuOptions = [
-  { title: 'Profile', href: '/profile' },
+  { title: 'Profile', href: '/auth/profile' },
   { title: 'Settings', href: '/settings' },
   { divider: true },
-  { title: 'Sign out', href: '/sign-out' },
+  { title: 'Sign out', href: '/' },
 ]
 
 </script>

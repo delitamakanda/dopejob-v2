@@ -3,9 +3,6 @@
   <aside>
     <div class="flex h-full w-full flex-col gap-5 overflow-y-auto rounded-md border bg-card pb-5 scrollbar-thin scrollbar-thumb-input scrollbar-thumb-rounded-md">
       <NuxtLink to="/">
-        Dopejob
-      </NuxtLink>
-      <NuxtLink to="/">
         Home
       </NuxtLink>
       <NuxtLink to="/browse">
@@ -13,17 +10,20 @@
       </NuxtLink>
       <NuxtLink
         v-if="!userStore?.user?.
-          isAuthenticated" to="/register">
+          isAuthenticated" to="/auth/register"
+>
         Signup
       </NuxtLink>
       <NuxtLink
         v-if="!userStore?.user?.
-          isAuthenticated" to="/login">
+          isAuthenticated" to="/auth/login"
+>
         Login
       </NuxtLink>
       <NuxtLink
         v-if="userStore?.user?.
-          isAuthenticated" to="/" @click="logout">
+          isAuthenticated" to="/" @click="logout"
+>
         Logout
       </NuxtLink>
       <SidebarItem :links="menu" />
@@ -45,12 +45,6 @@ const logout = () => {
 
 const bottomMenu = [
     {
-        title: 'Settings',
-        icon: 'heroicons:cog-8-tooth',
-        href: '/settings',
-        active: false,
-    },
-    {
         title: 'Help',
         icon: 'heroicons:question-mark-circle',
         href: '/help',
@@ -65,7 +59,7 @@ const bottomMenu = [
     {
         title: 'Sign Out',
         icon: 'heroicons:arrow-left-on-rectangle',
-        href: '#',
+        href: '/',
         active: false,
         onClick: logout,
     }
@@ -81,11 +75,8 @@ const menu = [
         title: 'Jobs',
         icon: 'heroicons:briefcase',
         items: [
-            { title: 'List', href: '/browse'},
-            { title: 'Create', href: '/createjob'},
-            { title: 'Edit', href: '/editjob'},
-            {title: 'Delete', href: '/deletejob'},
-            {title: 'Details', href: '/myjobs'},
+            { title: 'List', href: '/jobs'},
+            { title: 'Create', href: '/jobs/create'},
         ]
     },
     {

@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    routeRules: {
+        "/admin": { ssr: false }
+    },
     nitro: {
         prerender: {
             routes: ['/help', '/blog', 'settings']
@@ -56,6 +59,7 @@ export default defineNuxtConfig({
         '@nuxtjs/fontaine',
         '@morev/vue-transitions/nuxt',
         '@nuxt/content',
-        '@nuxt/ui'
+        '@nuxt/ui',
+        '@nuxt/test-utils/module'
     ]
 })
