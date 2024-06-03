@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    nitro: {
+        prerender: {
+            routes: ['/help', '/blog', 'settings']
+        }
+    },
     tailwindcss: {
         exposeConfig: true,
     },
@@ -39,18 +44,18 @@ export default defineNuxtConfig({
     },
     modules: [
         '@nuxtjs/tailwindcss',
+        '@nuxtjs/color-mode',
         '@pinia/nuxt',
         '@nuxtjs/i18n',
         'nuxt-icon',
-        '@nuxt/content',
         '@nuxt/image',
         'nuxt-og-image',
         '@vueuse/nuxt',
         'nuxt-headlessui',
         '@nuxtjs/google-fonts',
         '@nuxtjs/fontaine',
-        '@nuxthq/studio',
-        '@morev/vue-transitions/nuxt'
+        '@morev/vue-transitions/nuxt',
+        '@nuxt/content',
+        '@nuxt/ui'
     ]
 })
-
