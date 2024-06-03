@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@nuxt/test-utils": "^3.13.1"
+  }
+}
