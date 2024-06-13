@@ -33,22 +33,12 @@ class AnnonceViewSet(viewsets.ModelViewSet):
     filter_backends = (filters_drf.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     lookup_field = 'id' # slug
     pagination_class = None  # FIX
-    permission_classes = (permissions.AllowAny,)
-
-
-class MyAnnonceViewSet(viewsets.ModelViewSet):
-    queryset = Annonce.objects.all()
-    serializer_class = AnnonceSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = [authentication.TokenAuthentication]
-    filter_backends = (filters_drf.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    lookup_field = 'id'
-    pagination_class = None  # FIX
-    search_fields = ['title',
-                         'job_description','requirements', 'enterprise__company_name']
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        return Annonce.objects.filter(enterprise__user=self.request.user)
+        if self.request.user:
+            return Annonce.objects.filter(enterprise__user=self.request.user)
+        return Annonce.objects.all()
 
 class JobViewSet(viewsets.ModelViewSet):
 
