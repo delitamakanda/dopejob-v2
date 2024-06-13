@@ -31,8 +31,8 @@ django-rest-auth==0.9.5
 django-storages==1.6.5
 django-templated-mail==1.1.1
 django-webpack-loader==1.1.0
-djangorestframework==3.11.2
-djangorestframework-simplejwt==4.3.0
+djangorestframework==3.15.1
+djangorestframework-simplejwt==5.3.1
 djoser==2.2.3
 gunicorn==22.0.0
 html2text==2018.1.9
